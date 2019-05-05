@@ -1,5 +1,0 @@
-name: Lexer & Parser
-description: 'Lexer & Parser service'
-package: Custom
-type: module
-core: 8.x
