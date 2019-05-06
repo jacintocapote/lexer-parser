@@ -19,7 +19,7 @@ class LexerParserService {
       $output = Parser::parse($input);
     }
     catch (ShuntException $e) {
-      $output = t('Error');
+      $output = $e->getMessage();
     }
 
     return $output;
@@ -49,7 +49,7 @@ class LexerParserService {
       $tree_raw = Parser::parseDump($input);
     }
     catch (ShuntException $e) {
-      $output = t('Error');
+      $tree = [];
     }
 
     if (!empty($tree_raw)) {
