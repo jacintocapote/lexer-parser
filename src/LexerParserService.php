@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\lexer_parser;
 
 use Drupal\lexer_parser\Shunt\Parser;
@@ -14,8 +13,14 @@ class LexerParserService {
    * Returns a parser string.
    */
   public function parserString($input) {
-    $trm = '3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3';
-    return Parser::parse($input);
+    try {
+      $output = Parser::parse($input);
+    }
+    catch (ShuntError $e) {
+      $output = t('Error');
+    }
+
+    return $output;
   }
 
 }
