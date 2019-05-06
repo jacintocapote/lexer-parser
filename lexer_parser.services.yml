@@ -1,0 +1,3 @@
+services:
+    lexer_parser.lexerparser:
+        class: Drupal\lexer_parser\LexerParserService
