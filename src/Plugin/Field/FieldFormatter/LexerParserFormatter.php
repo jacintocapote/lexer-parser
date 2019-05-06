@@ -22,7 +22,7 @@ use Drupal\lexer_parser\LexerParserService;
  */
 class LexerParserFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
   /**
-   * The entity manager service.
+   * The lexer parser service.
    *
    * @var \Drupal\Lexer_parser\lexerParser
    */
@@ -87,7 +87,13 @@ class LexerParserFormatter extends FormatterBase implements ContainerFactoryPlug
 
     foreach ($items as $delta => $item) {
       // Render each element as markup.
-      $element[$delta] = ['#markup' => $this->lexerParser->parserString($item->value)];
+      $element[$delta] = [
+        '#theme' => 'lexer_parser_formatter',
+        '#attached' => ['library' => ['lexer_parser/lexer-parser']],
+        '#original' => $item->value,
+        '#output' => $this->lexerParser->parserString($item->value),
+        '#tree' => $this->lexerParser->parserTree($item->value),
+      ];
     }
 
     return $element;

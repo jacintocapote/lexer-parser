@@ -32,12 +32,12 @@ class Scanner {
     while (trim($input) !== '') {
       if (!preg_match(self::PATTERN, $input, $match)) {
         // Syntax error.
-        throw new ShuntError(sprintf(self::ERR_MATCH, substr($input, 0, 10)));
+        throw new ShuntException(sprintf(self::ERR_MATCH, substr($input, 0, 10)));
       }
 
       if (empty($match[1]) && $match[1] !== '0') {
         // Nothing found -> avoid endless loop.
-        throw new ShuntError(sprintf(self::ERR_EMPTY, substr($input, 0, 10)));
+        throw new ShuntException(sprintf(self::ERR_EMPTY, substr($input, 0, 10)));
       }
 
       // Remove the first matched token from the input, for the next iteration.
@@ -134,7 +134,7 @@ class Scanner {
    * Get info from tokens.
    */
   public function dump() {
-    print_r($this->tokens);
+    return $this->tokens;
   }
 
   /**

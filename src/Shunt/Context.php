@@ -25,7 +25,7 @@ class Context {
    */
   public function fn($name, array $args) {
     if (!isset($this->functions[$name])) {
-      throw new ShuntError('run-time error: undefined function "' . $name . '"');
+      throw new ShuntException('run-time error: undefined function "' . $name . '"');
     }
 
     return (float) call_user_func_array($this->functions[$name], $args);
@@ -44,7 +44,7 @@ class Context {
    */
   public function cs($name) {
     if (!isset($this->constants[$name])) {
-      throw new ShuntError('run-time error: undefined constant "' . $name . '"');
+      throw new ShuntException('run-time error: undefined constant "' . $name . '"');
     }
 
     return $this->constants[$name];
@@ -67,7 +67,7 @@ class Context {
    */
   public function execCustomOperatorHandler($op, $lhsValue, $rhsValue) {
     if (!isset($this->operatorHandlers[$op])) {
-      throw new ShuntError('run-time error: undefined operator handler "' . $op . '"');
+      throw new ShuntException('run-time error: undefined operator handler "' . $op . '"');
     }
 
     return call_user_func_array($this->operatorHandlers[$op], [$lhsValue, $rhsValue]);
@@ -101,7 +101,7 @@ class Context {
       $this->constants[$name] = $value;
     }
     else {
-      throw new ShuntError('function or number expected');
+      throw new ShuntException('function or number expected');
     }
   }
 
@@ -110,7 +110,7 @@ class Context {
    */
   public function defOperator($operator, callable $func) {
     if ($operator & Token::T_OPERATOR == 0) {
-      throw new ShuntError('unsupported operator');
+      throw new ShuntException('unsupported operator');
     }
     $this->operatorHandlers[$operator] = $func;
   }

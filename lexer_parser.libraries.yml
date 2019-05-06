@@ -1,0 +1,5 @@
+lexer-parser:
+  version: 1.x
+  css:
+    theme:
+      css/lexer-parser-theme.css: {}

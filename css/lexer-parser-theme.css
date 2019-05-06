@@ -1,0 +1,68 @@
+.lexer-parser .original:hover + .extend-parser ol {
+  max-height: inherit;
+  opacity: 1;
+}
+.lexer-parser ol {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  max-height: 0px;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 300ms ease;
+}
+
+.lexer-parser .rectangle-list {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  max-height: 0px;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 300ms ease;
+}
+.lexer-parser .rectangle-list p {
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em .8em;
+  *padding: .4em;
+  margin: .5em 0 .5em 2.5em;
+  background: #ddd;
+  color: #444;
+  text-decoration: none;
+  transition: all .3s ease-out;
+}
+
+.lexer-parser .rectangle-list p:hover {
+  background: #eee;
+}
+
+.lexer-parser .rectangle-list p:before {
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  left: -2.5em;
+  top: 50%;
+  margin-top: -1em;
+  background: #fa8072;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.lexer-parser .rectangle-list p:after {
+  position: absolute;
+  content: '';
+  border: .5em solid transparent;
+  left: -1em;
+  top: 50%;
+  margin-top: -.5em;
+  transition: all .3s ease-out;
+}
+
+.lexer-parser .rectangle-list p:hover:after {
+  left: -.5em;
+  border-left-color: #fa8072;
+}

@@ -64,7 +64,7 @@ class Parser {
     // While there are still operator tokens in the stack.
     while ($t = array_pop($this->stack)) {
       if ($t->type === Token::T_POPEN || $t->type === Token::T_PCLOSE) {
-        throw new ShuntError('parser error: incorrect nesting of `(` and `)`');
+        throw new ShuntException('parser error: incorrect nesting of `(` and `)`');
       }
 
       $this->queue[] = $t;
@@ -125,7 +125,7 @@ class Parser {
 
           // If there are fewer than n values on the stack.
           if ($len < $na) {
-            throw new ShuntError('run-time error: too few parameters for operator "' . $t->value . '" (' . $na . ' -> ' . $len . ')');
+            throw new ShuntException('run-time error: too few parameters for operator "' . $t->value . '" (' . $na . ' -> ' . $len . ')');
           }
 
           $rhs = array_pop($this->stack);
@@ -145,7 +145,7 @@ class Parser {
           break;
 
         default:
-          throw new ShuntError('run-time error: unexpected token `' . $t->value . '`');
+          throw new ShuntException('run-time error: unexpected token `' . $t->value . '`');
       }
     }
 
@@ -161,7 +161,7 @@ class Parser {
 
     // If there are more values in the stack
     // (Error) The user input has too many values.
-    throw new ShuntError('run-time error: too many values in the stack');
+    throw new ShuntException('run-time error: too many values in the stack');
   }
 
   /**
@@ -193,7 +193,7 @@ class Parser {
 
         case Token::T_DIV:
           if ($rhs === 0.) {
-            throw new ShuntError('run-time error: division by zero');
+            throw new ShuntException('run-time error: division by zero');
           }
 
           return $lhs / $rhs;
@@ -229,29 +229,8 @@ class Parser {
   /**
    * Get a string dump from an input.
    */
-  public function dump($str = FALSE) {
-    if ($str === FALSE) {
-      print_r($this->queue);
-
-      return;
-    }
-
-    $res = [];
-
-    foreach ($this->queue as $t) {
-      $val = $t->value;
-
-      switch ($t->type) {
-        case Token::T_UNARY_MINUS:
-        case Token::T_UNARY_PLUS:
-          $val = 'unary' . $val;
-          break;
-      }
-
-      $res[] = $val;
-    }
-
-    print implode(' ', $res);
+  public function dump() {
+    return $this->scanner->dump();
   }
 
   /**
@@ -326,7 +305,7 @@ class Parser {
         // either the separator was misplaced
         // or parentheses were mismatched.
         if ($pe !== TRUE) {
-          throw new ShuntError('parser error: missing token `(` or misplaced token `,`');
+          throw new ShuntException('parser error: missing token `(` or misplaced token `,`');
         }
 
         break;
@@ -401,7 +380,7 @@ class Parser {
         // If the stack runs out without finding a left parenthesis,
         // then there are mismatched parentheses.
         if ($pe !== TRUE) {
-          throw new ShuntError('parser error: unexpected token `)`');
+          throw new ShuntException('parser error: unexpected token `)`');
         }
 
         // If the token at the top of the stack
@@ -414,7 +393,7 @@ class Parser {
         break;
 
       default:
-        throw new ShuntError('parser error: unknown token "' . $t->value . '"');
+        throw new ShuntException('parser error: unknown token "' . $t->value . '"');
     }
   }
 
@@ -470,6 +449,15 @@ class Parser {
 
     return $obj
       ->reduce($ctx ?: new Context());
+  }
+
+  /**
+   * Dump for a formula.
+   */
+  public static function parseDump($term) {
+    $obj = new self(new Scanner($term));
+
+    return $obj->dump();
   }
 
 }

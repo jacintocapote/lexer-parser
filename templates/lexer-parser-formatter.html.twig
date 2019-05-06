@@ -1,0 +1,19 @@
+<div class="lexer-parser">
+  <h3>
+    {% trans %}
+      Lexer & Parser
+    {% endtrans %}
+  </h3>
+
+  <p class="original">Original formula: {{ original }}</p>
+  <div class="extend-parser">
+    {% if tree %}
+      <ol class="rectangle-list">
+        {% for item in tree %}
+          <li><p><strong>{{ item.type }}: </strong>{{ item.value }}</p></li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </div>
+  <p>Output after parse: {{ output }}</p>
+</div>
